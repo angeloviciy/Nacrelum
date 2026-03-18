@@ -82,9 +82,10 @@ final class AppController: NSObject, NSApplicationDelegate {
     var hotKeyHandlerRef: EventHandlerRef?
     var lastDebugSnapshot = ""
     var lastDebugSnapshotTime: TimeInterval = 0
-    var appUpdater = AppUpdater()
-    var appUpdateState: AppUpdateState = .idle
     var updateCheckTask: Task<Void, Never>?
+    var latestAvailableRelease: GitHubReleaseInfo?
+    var lastNotifiedReleaseTag: String?
+    var isCheckingForUpdates = false
 
     var apples: [AppleState] = []
     let appleGravity: CGFloat = -600

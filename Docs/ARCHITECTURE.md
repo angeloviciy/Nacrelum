@@ -22,8 +22,7 @@ PixelClaw is a single-process AppKit accessory app: a tiny animated pet that liv
 - `App/AppController+Movement.swift`: walking, sleep/wake state, jumping, and visual animation
 - `App/AppController+Apples.swift`: apple spawning, physics, collisions, and click interactions
 - `App/AppController+Accessibility.swift`: accessibility permission flow, status bar menu, window setup, and launch sequence
-- `App/AppController+Updates.swift`: automatic update checks and install flow
-- `App/AppUpdater.swift`: GitHub release fetching, download, and self-update logic
+- `App/AppController+Updates.swift`: release checks and browser handoff for new versions
 - `App/AboutWindowController.swift`: About window UI
 
 ## Current Constraints

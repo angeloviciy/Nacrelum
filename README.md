@@ -37,7 +37,7 @@ make app
 open Dist/PixelClaw.app
 ```
 
-To build a GitHub-release-ready zip for the updater:
+To build a release zip:
 
 ```sh
 make zip
@@ -78,7 +78,7 @@ PixelClaw uses Accessibility access to read your Dock position and respond to cl
 - `Package.swift`: Swift Package Manager manifest
 - `Sources/PixelClaw/Support`: constants, sprite data, shared models, Dock geometry helpers
 - `Sources/PixelClaw/Views`: AppKit drawing code for the crab, apples, and floor shadow
-- `Sources/PixelClaw/App`: application state, update loop, interaction logic, and entry point
+- `Sources/PixelClaw/App`: application state, animation loop, interaction logic, and entry point
 - `Docs/ARCHITECTURE.md`: high-level structure for contributors
 
 ## License
