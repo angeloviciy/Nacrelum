@@ -2,16 +2,12 @@
 
 A tiny animated pet that lives on your Dock.
 
-## Install
-
-To install PixelClaw from GitHub without the usual browser quarantine flow:
+## Quick Install
 
 ```sh
 curl -fL https://github.com/masasron/PixelClaw/releases/download/v1.0.0/PixelClaw.dmg -o PixelClaw.dmg
 open PixelClaw.dmg
 ```
-
-This Terminal-based install flow avoids the usual browser download quarantine path. Browser-downloaded builds may be blocked by macOS.
 
 ## Requirements
 
