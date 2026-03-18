@@ -5,9 +5,6 @@ BUNDLE_ID ?= com.ronmasas.$(APP_NAME)
 APP_VERSION ?= 1.0.0
 APP_BUILD ?= 1
 DIST_DIR ?= Dist
-SIGN_IDENTITY ?=
-ENTITLEMENTS ?=
-SIGN_ON_BUILD ?= 1
 BINARY = .build/$(CONFIG)/$(APP_NAME)
 RELEASE_BINARY = .build/release/$(APP_NAME)
 APP_BUNDLE = $(DIST_DIR)/$(APP_NAME).app
@@ -20,6 +17,7 @@ RELEASE_RESOURCE_BUNDLE = .build/release/$(APP_NAME)_$(APP_NAME).bundle
 ICON_SOURCE = Assets/AppIcon/appicon.png
 ICONSET_DIR = $(DIST_DIR)/AppIcon.iconset
 ICON_FILE = $(APP_RESOURCES_DIR)/AppIcon.icns
+DMG_PATH = $(DIST_DIR)/$(APP_NAME).dmg
 ZIP_NAME = $(APP_NAME)-$(APP_VERSION).zip
 ZIP_PATH = $(DIST_DIR)/$(ZIP_NAME)
 
@@ -87,33 +85,21 @@ app: release
 		'</plist>' > $(APP_PLIST)
 	rm -rf $(ICONSET_DIR)
 	chmod +x $(APP_MACOS_DIR)/$(APP_NAME)
-	if [ -n "$(SIGN_IDENTITY)" ] && [ "$(SIGN_ON_BUILD)" = "1" ]; then \
-		SIGN_IDENTITY='$(SIGN_IDENTITY)' \
-		APP_BUNDLE='$(APP_BUNDLE)' \
-		BUNDLE_ID='$(BUNDLE_ID)' \
-		ENTITLEMENTS='$(ENTITLEMENTS)' \
-		Scripts/sign_app.sh; \
-	fi
 	@echo "Created $(APP_BUNDLE)"
-
-sign:
-	$(MAKE) app SIGN_ON_BUILD=0
-	SIGN_IDENTITY='$(SIGN_IDENTITY)' \
-	APP_BUNDLE='$(APP_BUNDLE)' \
-	BUNDLE_ID='$(BUNDLE_ID)' \
-	ENTITLEMENTS='$(ENTITLEMENTS)' \
-	Scripts/sign_app.sh
 
 clean:
 	rm -rf .build $(DIST_DIR)
 
 dmg: app
 	chmod +x Scripts/create_dmg.sh
+	DIST_DIR='$(DIST_DIR)' \
+	APP_BUNDLE='$(APP_BUNDLE)' \
+	DMG_PATH='$(DMG_PATH)' \
 	Scripts/create_dmg.sh
 
-zip: sign
+zip: app
 	rm -f $(ZIP_PATH)
-	ditto -c -k --keepParent $(APP_BUNDLE) $(ZIP_PATH)
+	COPYFILE_DISABLE=1 ditto -c -k --keepParent $(APP_BUNDLE) $(ZIP_PATH)
 	@echo "Created $(ZIP_PATH)"
 
-.PHONY: all run debug release app sign dmg zip clean
+.PHONY: all run debug release app dmg zip clean

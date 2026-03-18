@@ -6,7 +6,7 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 ROOT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 
 APP_NAME="${APP_NAME:-PixelClaw}"
-DIST_DIR="${DIST_DIR:-$ROOT_DIR/dist}"
+DIST_DIR="${DIST_DIR:-$ROOT_DIR/Dist}"
 APP_BUNDLE="${APP_BUNDLE:-$DIST_DIR/$APP_NAME.app}"
 DMG_PATH="${DMG_PATH:-$DIST_DIR/$APP_NAME.dmg}"
 VOLUME_NAME="${VOLUME_NAME:-$APP_NAME}"
@@ -167,13 +167,28 @@ tell application "Finder"
         close
         open
         update without registering applications
-        delay 2
+        delay 3
+        close
     end tell
 end tell
 EOF
 
+for _ in {1..20}; do
+  if [[ -f "$MOUNT_DIR/.DS_Store" ]]; then
+    break
+  fi
+  sleep 1
+done
+
+if [[ ! -f "$MOUNT_DIR/.DS_Store" ]]; then
+  echo "Finder did not persist DMG layout metadata (.DS_Store)." >&2
+  exit 1
+fi
+
 sync
+sleep 1
 hdiutil detach "$MOUNT_DIR" -quiet
+MOUNT_DIR=""
 
 rm -f "$DMG_PATH"
 hdiutil convert \

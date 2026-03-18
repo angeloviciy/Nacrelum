@@ -2,6 +2,17 @@
 
 A tiny animated pet that lives on your Dock.
 
+## Install
+
+To install PixelClaw from GitHub without the usual browser quarantine flow:
+
+```sh
+curl -fL https://github.com/masasron/PixelClaw/releases/download/v1.0.0/PixelClaw.dmg -o PixelClaw.dmg
+open PixelClaw.dmg
+```
+
+This Terminal-based install flow avoids the usual browser download quarantine path. Browser-downloaded builds may be blocked by macOS.
+
 ## Requirements
 
 - macOS 12 or later
@@ -26,21 +37,17 @@ make app
 open Dist/PixelClaw.app
 ```
 
-To build and sign the app with an Apple certificate:
-
-```sh
-cp .signing.env.example .signing.env
-$EDITOR .signing.env
-make sign
-```
-
 To build a GitHub-release-ready zip for the updater:
 
 ```sh
 make zip
 ```
 
-If you keep the same bundle identifier and Team ID across updates, macOS is much more likely to retain previously granted permissions such as Accessibility access when you replace the app in place.
+To build a DMG for distribution:
+
+```sh
+make dmg
+```
 
 To launch with debug logging enabled:
 
