@@ -1,6 +1,6 @@
 # PixelClaw
 
-Your macOS pet on your Dock.
+A tiny animated pet that lives on your Dock.
 
 ## Requirements
 

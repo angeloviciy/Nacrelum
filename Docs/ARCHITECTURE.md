@@ -1,6 +1,6 @@
 # Architecture
 
-PixelClaw is a single-process AppKit accessory app: your macOS pet on your Dock.
+PixelClaw is a single-process AppKit accessory app: a tiny animated pet that lives on your Dock.
 
 ## Runtime Model
 

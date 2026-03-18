@@ -48,7 +48,7 @@ final class AboutWindowController: NSWindowController {
         versionLabel.textColor = .tertiaryLabelColor
         versionLabel.alignment = .center
 
-        let descriptionLabel = NSTextField(labelWithString: "Your macOS pet on your Dock.")
+        let descriptionLabel = NSTextField(labelWithString: "A tiny animated pet that lives on your Dock.")
         descriptionLabel.font = NSFont.systemFont(ofSize: 13)
         descriptionLabel.textColor = .secondaryLabelColor
         descriptionLabel.alignment = .center
