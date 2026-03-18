@@ -1,6 +1,10 @@
 # PixelClaw
 
-A tiny animated pet that lives on your Dock.
+Built PixelClaw because I got bored waiting for Claude Code. It’s a tiny pixel
+crab that lives on your Dock, sleeps, wakes on click, and chases apples you
+drop.
+
+[![PixelClaw preview](Docs/Assets/video.png)](https://www.youtube.com/watch?v=ni-iOwVd1R0)
 
 ## Quick Install
 
@@ -60,7 +64,10 @@ swift run PixelClaw --debug
 
 ## Permissions
 
-PixelClaw uses Accessibility access to read your Dock position and respond to clicks. The first time you launch it, macOS may ask for permission. If your pet is not lining up with the Dock correctly, check `System Settings > Privacy & Security > Accessibility`.
+PixelClaw uses Accessibility access to read your Dock position and respond to
+clicks. The first time you launch it, macOS may ask for permission. If your pet
+is not lining up with the Dock correctly, check
+`System Settings > Privacy & Security > Accessibility`.
 
 ## Controls
 
@@ -72,9 +79,12 @@ PixelClaw uses Accessibility access to read your Dock position and respond to cl
 ## Project Layout
 
 - `Package.swift`: Swift Package Manager manifest
-- `Sources/PixelClaw/Support`: constants, sprite data, shared models, Dock geometry helpers
-- `Sources/PixelClaw/Views`: AppKit drawing code for the crab, apples, and floor shadow
-- `Sources/PixelClaw/App`: application state, animation loop, interaction logic, and entry point
+- `Sources/PixelClaw/Support`: constants, sprite data, shared models, Dock
+  geometry helpers
+- `Sources/PixelClaw/Views`: AppKit drawing code for the crab, apples, and floor
+  shadow
+- `Sources/PixelClaw/App`: application state, animation loop, interaction logic,
+  and entry point
 - `Docs/ARCHITECTURE.md`: high-level structure for contributors
 
 ## License
