@@ -84,12 +84,13 @@ final class CatView: NSView {
         }
 
         // ── Body (multi-value grid) ──────────────────────────────
-        // Skip value 5 (eyes) — drawn separately with animation
+        // Value 5 (eyes) filled with body color here, animated eye drawn on top
         for rowIndex in 0..<bodyGrid.count {
             for col in 0..<bodyGrid[rowIndex].count {
                 let val = bodyGrid[rowIndex][col]
-                guard val != 0 && val != 5 else { continue }
-                guard let color = colorForValue(val) else { continue }
+                guard val != 0 else { continue }
+                let drawVal = val == 5 ? 3 : val  // treat eye slots as body color
+                guard let color = colorForValue(drawVal) else { continue }
                 ctx.setFillColor(color)
                 ctx.fill(px(CGFloat(col), oy + CGFloat(bodyGrid.count - 1 - rowIndex) * s + bb + legYBob).insetBy(dx: -0.5, dy: -0.5))
             }
