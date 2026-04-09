@@ -133,12 +133,12 @@ final class CatView: NSView {
 
         if eyeClose < 0.9 {
             let starScale = s * (1 - eyeClose * 0.5)
-            drawStarEye(ctx: ctx, centerX: px(7, 0).origin.x + eyeShift + s / 2, centerY: eyeRowY + s / 2, size: starScale)
+            drawStarEye(ctx: ctx, centerX: px(8, 0).origin.x + eyeShift + s / 2, centerY: eyeRowY + s / 2, size: starScale)
         } else {
             let dashHeight = max(1, s * 0.15)
             let dashY = eyeRowY + s / 2 - dashHeight / 2
             ctx.setFillColor(eyeColor.cgColor)
-            ctx.fill(CGRect(x: px(7, 0).origin.x + eyeShift, y: dashY, width: s, height: dashHeight))
+            ctx.fill(CGRect(x: px(8, 0).origin.x + eyeShift, y: dashY, width: s, height: dashHeight))
         }
 
         // ── Halo ─────────────────────────────────────────────────

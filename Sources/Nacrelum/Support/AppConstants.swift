@@ -44,7 +44,7 @@ let SHADOW_VIEW_HEIGHT: CGFloat = 6 * SCALE + SHADOW_FLOOR_MARGIN
 let bodyGrid: [[Int]] = [
     [0, 1, 0, 0, 0, 0, 0, 1, 1, 0],   // Row 0: tail tip (curled up) + ear (2px)
     [0, 1, 0, 0, 0, 1, 1, 1, 1, 0],   // Row 1: tail base + head top (4px wide)
-    [0, 1, 1, 1, 1, 1, 1, 3, 1, 0],   // Row 2: body + eye at col 7
+    [0, 1, 1, 1, 1, 1, 1, 1, 3, 0],   // Row 2: body + eye at col 8
     [0, 0, 1, 1, 1, 1, 1, 1, 1, 0],   // Row 3: body
     [0, 0, 1, 1, 1, 1, 1, 1, 0, 0],   // Row 4: body
     [0, 0, 0, 1, 4, 4, 1, 0, 0, 0],   // Row 5: lower body + belly patch (cols 4-5)
