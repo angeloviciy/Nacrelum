@@ -1,14 +1,17 @@
 # Nacrelum
 
-A golden cat desktop tamagotchi that lives on your Dock. It walks around, sleeps,
-wakes on click, and chases stars you drop.
+A desktop tamagotchi that lives on your Dock. It walks around, sleeps,
+wakes on click, and chases stars you drop. Made in honor of the original Nacrelum, my
+/buddy on Claude Code that was with me all too briefly for v2.1.96
 
+
+I miss you buddy
 ```
       (   )
        /\_/\
     (  ✦   ✦  )
      (   ω   )
-    (")_(")~
+    (")_(")   ~~
 ```
 
 Forked from [PixelClaw](https://github.com/masasron/PixelClaw) by Ron Masas.
@@ -60,14 +63,6 @@ is not lining up with the Dock correctly, check
 | Click (sleeping) | Wake it up |
 | Click a star | Toss it |
 
-## Features
-
-- Golden cat with halo, star eyes, omega nose, and wagging tail
-- Walks on Dock and ground, jumps between levels
-- Falls asleep after idle time, dims when drowsy
-- Chases falling stars with excited hops
-- Breathing animation, blinking, eye tracking
-- Halo floats with a gentle lag behind the cat
 
 ## Project Layout
 
