@@ -61,7 +61,9 @@ extension AppController {
         // Cat stays visible and active even when dock is obscured
 
         let mouseLocation = NSEvent.mouseLocation
-        let mouseX = mouseLocation.x
+        let mainScreenFrame = NSScreen.screens[0].frame
+        let mouseOnMainScreen = mainScreenFrame.contains(mouseLocation)
+        let mouseX = mouseOnMainScreen ? mouseLocation.x : catX
 
         if jumpPhase != .none {
             catView.isWalking = false

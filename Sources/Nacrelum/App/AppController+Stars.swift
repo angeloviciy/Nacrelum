@@ -4,7 +4,7 @@ import Carbon.HIToolbox
 extension AppController {
     @objc func feedStar() {
         guard window != nil else { return }
-        guard let screen = NSScreen.main else { return }
+        let screen = NSScreen.screens[0]
         let screenFrame = screen.frame
 
         let starView = StarView(frame: NSRect(x: 0, y: 0, width: starSize, height: starSize))

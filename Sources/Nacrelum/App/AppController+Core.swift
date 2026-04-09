@@ -72,7 +72,7 @@ extension AppController {
     }
 
     func refreshDockBounds() {
-        guard let screen = NSScreen.main else { return }
+        let screen = NSScreen.screens[0]
         let screenFrame = screen.frame
 
         let wasVisible = dockVisible

@@ -219,7 +219,7 @@ extension AppController {
     func completeLaunch() {
         guard window == nil else { return }
 
-        let screen = NSScreen.main!
+        let screen = NSScreen.screens[0]
         let screenFrame = screen.frame
         let dock = DockInfo.get(screen: screen)
 
