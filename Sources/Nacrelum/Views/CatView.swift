@@ -26,11 +26,11 @@ final class CatView: NSView {
         ctx.setShouldAntialias(false)
 
         let s = SCALE
-        let ox: CGFloat = 12 * s
+        let ox: CGFloat = 10 * s
         let oy: CGFloat = 4 * s
         let bb = bodyBob
 
-        let bodyWidth: CGFloat = 12 * s
+        let bodyWidth: CGFloat = 10 * s
         let centerX = ox + bodyWidth / 2
 
         func px(_ col: CGFloat, _ row: CGFloat, w: CGFloat = s, h: CGFloat = s) -> CGRect {
@@ -83,11 +83,12 @@ final class CatView: NSView {
         if armsRaised {
             ctx.setFillColor(bodyColor.cgColor)
             let armTopY = oy + CGFloat(bodyGrid.count) * s + bb + legYBob
-            ctx.fill(px(3, armTopY, w: s, h: 2 * s).insetBy(dx: -0.5, dy: -0.5))
-            ctx.fill(px(8, armTopY, w: s, h: 2 * s).insetBy(dx: -0.5, dy: -0.5))
+            // Raise ear tips higher
+            ctx.fill(px(5, armTopY, w: s, h: 2 * s).insetBy(dx: -0.5, dy: -0.5))
+            ctx.fill(px(7, armTopY, w: s, h: 2 * s).insetBy(dx: -0.5, dy: -0.5))
         }
 
-        // ── Paws ─────────────────────────────────────────────────
+        // ── Legs ─────────────────────────────────────────────────
         ctx.setFillColor(bodyColor.cgColor)
         for rowIndex in 0..<legs.count {
             for col in 0..<legs[rowIndex].count where legs[rowIndex][col] == 1 {
@@ -98,7 +99,7 @@ final class CatView: NSView {
         // ── Body ─────────────────────────────────────────────────
         for rowIndex in 0..<bodyGrid.count {
             for col in 0..<bodyGrid[rowIndex].count where bodyGrid[rowIndex][col] == 1 {
-                if armsRaised && rowIndex == bodyGrid.count - 1 && (col == 3 || col == 8) {
+                if armsRaised && rowIndex == 0 && (col == 5 || col == 7) {
                     continue
                 }
                 ctx.fill(px(CGFloat(col), oy + CGFloat(bodyGrid.count - 1 - rowIndex) * s + bb + legYBob).insetBy(dx: -0.5, dy: -0.5))
@@ -113,48 +114,51 @@ final class CatView: NSView {
         }
 
         // ── Inner ears ───────────────────────────────────────────
-        let earInnerRow = oy + CGFloat(bodyGrid.count - 1 - 1) * s + bb + legYBob
+        // Ear tips at row 0 cols 5,7 — inner ear is on the inside edge
+        let earRow = oy + CGFloat(bodyGrid.count - 1 - 0) * s + bb + legYBob
         ctx.setFillColor(earInnerColor.cgColor)
-        ctx.fill(px(1, earInnerRow).insetBy(dx: -0.5, dy: -0.5))
-        ctx.fill(px(10, earInnerRow).insetBy(dx: -0.5, dy: -0.5))
+        ctx.fill(px(6, earRow).insetBy(dx: -0.5, dy: -0.5))
 
         // ── Star eyes ────────────────────────────────────────────
+        // Eyes on row 2 (the widest head row), at cols 5 and 7
         let flip: CGFloat = facingRight ? 1 : -1
         let minimumEyeInset: CGFloat = 2
         let maxEyeShift = max(0, s - minimumEyeInset)
         let eyeShift = round(max(-1, min(1, lookDir)) * maxEyeShift) * flip
-        let eyeRowY = oy + CGFloat(bodyGrid.count - 1 - 3) * s + bb + legYBob
+        let eyeRowY = oy + CGFloat(bodyGrid.count - 1 - 2) * s + bb + legYBob
 
         if eyeClose < 0.9 {
             let starScale = s * (1 - eyeClose * 0.5)
-            drawStarEye(ctx: ctx, centerX: px(3, 0).origin.x + eyeShift + s / 2, centerY: eyeRowY + s / 2, size: starScale)
-            drawStarEye(ctx: ctx, centerX: px(8, 0).origin.x + eyeShift + s / 2, centerY: eyeRowY + s / 2, size: starScale)
+            drawStarEye(ctx: ctx, centerX: px(5, 0).origin.x + eyeShift + s / 2, centerY: eyeRowY + s / 2, size: starScale)
+            drawStarEye(ctx: ctx, centerX: px(7, 0).origin.x + eyeShift + s / 2, centerY: eyeRowY + s / 2, size: starScale)
         } else {
+            // Closed eyes: horizontal dash
             let dashHeight = max(1, s * 0.15)
             let dashY = eyeRowY + s / 2 - dashHeight / 2
             ctx.setFillColor(eyeColor.cgColor)
-            ctx.fill(CGRect(x: px(3, 0).origin.x + eyeShift, y: dashY, width: s, height: dashHeight))
-            ctx.fill(CGRect(x: px(8, 0).origin.x + eyeShift, y: dashY, width: s, height: dashHeight))
+            ctx.fill(CGRect(x: px(5, 0).origin.x + eyeShift, y: dashY, width: s, height: dashHeight))
+            ctx.fill(CGRect(x: px(7, 0).origin.x + eyeShift, y: dashY, width: s, height: dashHeight))
         }
 
-        // ── Omega nose ───────────────────────────────────────────
-        let noseRowY = oy + CGFloat(bodyGrid.count - 1 - 4) * s + bb + legYBob
+        // ── Nose ─────────────────────────────────────────────────
+        // Small dot on lower head (row 3), between the eyes
+        let noseRowY = oy + CGFloat(bodyGrid.count - 1 - 3) * s + bb + legYBob
         ctx.setFillColor(noseColor.cgColor)
-        let noseHalf = s * 0.35
-        let noseCX = px(5.5, 0).origin.x
-        ctx.fill(CGRect(x: noseCX - noseHalf * 2, y: noseRowY + s * 0.2, width: noseHalf, height: noseHalf))
-        ctx.fill(CGRect(x: noseCX + noseHalf, y: noseRowY + s * 0.2, width: noseHalf, height: noseHalf))
-        ctx.fill(CGRect(x: noseCX - noseHalf * 2, y: noseRowY + s * 0.2 + noseHalf, width: noseHalf * 3, height: noseHalf * 0.6))
+        let noseSize = s * 0.4
+        let noseCX = px(6, 0).origin.x + s / 2 - noseSize / 2
+        ctx.fill(CGRect(x: noseCX, y: noseRowY + s * 0.3, width: noseSize, height: noseSize))
 
         // ── Tail ─────────────────────────────────────────────────
+        // Tail extends from the back (left side when facing right)
         ctx.setFillColor(bodyColor.cgColor)
-        let tailBaseCol: CGFloat = facingRight ? -1 : CGFloat(bodyGrid[0].count)
+        let tailBaseCol: CGFloat = facingRight ? 0 : CGFloat(bodyGrid[0].count - 1)
         let tailDir: CGFloat = facingRight ? -1 : 1
-        let tailBaseRow = oy + 1 * s + bb + legYBob
+        // Tail starts at body level (row 5-6 area), curving upward
+        let tailBaseY = oy + CGFloat(bodyGrid.count - 1 - 5) * s + bb + legYBob
         let wagOffset = round(tailWag * s * 0.7)
-        ctx.fill(px(tailBaseCol, tailBaseRow).insetBy(dx: -0.5, dy: -0.5))
-        ctx.fill(px(tailBaseCol + tailDir, tailBaseRow + s * 0.5 + wagOffset).insetBy(dx: -0.5, dy: -0.5))
-        ctx.fill(px(tailBaseCol + tailDir * 2, tailBaseRow + s + wagOffset * 1.5).insetBy(dx: -0.5, dy: -0.5))
+        ctx.fill(px(tailBaseCol, tailBaseY + s * 0.5).insetBy(dx: -0.5, dy: -0.5))
+        ctx.fill(px(tailBaseCol + tailDir, tailBaseY + s * 1.0 + wagOffset).insetBy(dx: -0.5, dy: -0.5))
+        ctx.fill(px(tailBaseCol + tailDir * 2, tailBaseY + s * 1.5 + wagOffset * 1.3).insetBy(dx: -0.5, dy: -0.5))
 
         // ── Halo ─────────────────────────────────────────────────
         let haloBaseY = oy + CGFloat(bodyGrid.count) * s + 1 * s + haloBob + legYBob

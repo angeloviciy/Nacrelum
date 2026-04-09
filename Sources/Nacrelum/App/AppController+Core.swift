@@ -88,7 +88,7 @@ extension AppController {
         }
 
         let dock = DockInfo.get(screen: screen)
-        let halfBody: CGFloat = 6 * SCALE
+        let halfBody: CGFloat = 5 * SCALE
         let catFeetInSprite: CGFloat = 4 * SCALE
 
         dockLeft = dock.x + halfBody

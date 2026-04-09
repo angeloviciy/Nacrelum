@@ -520,7 +520,7 @@ extension AppController {
 
     func catHitRect() -> CGRect {
         let s = SCALE
-        let ox: CGFloat = 12 * s
+        let ox: CGFloat = 10 * s
         let oy: CGFloat = 4 * s
         let legRows = CGFloat(catView.currentLegs.count)
         let bottom = oy - legRows * s
@@ -528,7 +528,7 @@ extension AppController {
         return CGRect(
             x: catView.frame.origin.x + ox,
             y: catView.frame.origin.y + bottom,
-            width: 12 * s,
+            width: 10 * s,
             height: max(s, top - bottom)
         )
     }

@@ -63,8 +63,8 @@ final class AppController: NSObject, NSApplicationDelegate {
     var starSeekTargetID: ObjectIdentifier? = nil
     var starSeekHopTriggers: [CGFloat] = []
 
-    var spriteW: CGFloat = 36 * SCALE
-    var spriteH: CGFloat = 22 * SCALE
+    var spriteW: CGFloat = 30 * SCALE
+    var spriteH: CGFloat = 18 * SCALE
     var lastDockCheck: TimeInterval = 0
     let dockCheckInterval: TimeInterval = 2.0
     var dockVisible = true
