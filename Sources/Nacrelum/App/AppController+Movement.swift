@@ -58,10 +58,7 @@ extension AppController {
             refreshDockBounds()
         }
 
-        if !dockVisible {
-            lastActivityTime = now
-            return
-        }
+        // Cat stays visible and active even when dock is obscured
 
         let mouseLocation = NSEvent.mouseLocation
         let mouseX = mouseLocation.x

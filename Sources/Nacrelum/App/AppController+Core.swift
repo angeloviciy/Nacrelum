@@ -77,7 +77,6 @@ extension AppController {
 
         let wasVisible = dockVisible
         dockVisible = !isDockObscured(screen: screen)
-        window?.alphaValue = dockVisible ? 1 : 0
 
         if dockVisible && !wasVisible {
             if level == .dock {
