@@ -55,7 +55,7 @@ final class CatView: NSView {
 
             for rowIndex in 0..<bodyGrid.count {
                 let row = bodyGrid[rowIndex]
-                guard let edgeCol = row.firstIndex(of: 1) else { continue }
+                guard let edgeCol = row.firstIndex(where: { $0 != 0 }) else { continue }
                 let rect = px(CGFloat(edgeCol), oy + CGFloat(bodyGrid.count - 1 - rowIndex) * s + bb + legYBob)
                 ctx.fill(rect.offsetBy(dx: shadowOffset, dy: 0).insetBy(dx: -0.5, dy: -0.5))
             }
@@ -79,12 +79,11 @@ final class CatView: NSView {
             }
         }
 
-        // ── Arms raised (celebration — ears extend higher) ───────
+        // ── Arms raised (celebration) ────────────────────────────
         if armsRaised {
             ctx.setFillColor(bodyColor.cgColor)
             let armTopY = oy + CGFloat(bodyGrid.count) * s + bb + legYBob
             ctx.fill(px(2, armTopY, w: s, h: 2 * s).insetBy(dx: -0.5, dy: -0.5))
-            ctx.fill(px(7, armTopY, w: s, h: 2 * s).insetBy(dx: -0.5, dy: -0.5))
         }
 
         // ── Legs ─────────────────────────────────────────────────
@@ -95,76 +94,51 @@ final class CatView: NSView {
             }
         }
 
-        // ── Body ─────────────────────────────────────────────────
+        // ── Body (multi-value grid) ──────────────────────────────
+        // Skip value 3 (eye) — drawn separately with animation
         for rowIndex in 0..<bodyGrid.count {
-            for col in 0..<bodyGrid[rowIndex].count where bodyGrid[rowIndex][col] == 1 {
-                if armsRaised && rowIndex == 0 && (col == 2 || col == 7) {
+            for col in 0..<bodyGrid[rowIndex].count {
+                let val = bodyGrid[rowIndex][col]
+                guard val != 0 && val != 3 else { continue }
+
+                switch val {
+                case 2:  ctx.setFillColor(chestColor.cgColor)
+                case 4:  ctx.setFillColor(noseColor.cgColor)
+                default: ctx.setFillColor(bodyColor.cgColor)
+                }
+
+                if armsRaised && rowIndex == 0 && col == 2 {
                     continue
                 }
+
                 ctx.fill(px(CGFloat(col), oy + CGFloat(bodyGrid.count - 1 - rowIndex) * s + bb + legYBob).insetBy(dx: -0.5, dy: -0.5))
             }
         }
 
         // ── Leg-to-body connector ────────────────────────────────
         if bb + legYBob > 0 {
+            ctx.setFillColor(bodyColor.cgColor)
             for col in 0..<legs[0].count where legs[0][col] == 1 {
                 ctx.fill(px(CGFloat(col), oy, w: s, h: bb + legYBob).insetBy(dx: -0.5, dy: 0))
             }
         }
 
-        // ── Chest tuft (lighter gold on body row) ────────────────
-        let chestRow = oy + CGFloat(bodyGrid.count - 1 - 5) * s + bb + legYBob
-        ctx.setFillColor(chestColor.cgColor)
-        ctx.fill(px(4, chestRow).insetBy(dx: -0.5, dy: -0.5))
-        ctx.fill(px(5, chestRow).insetBy(dx: -0.5, dy: -0.5))
-
-        // ── Inner ears ───────────────────────────────────────────
-        // Row 1 has ear bases at (1,2) and (7,8) — inner ear on inside edge
-        let earBaseRow = oy + CGFloat(bodyGrid.count - 1 - 1) * s + bb + legYBob
-        ctx.setFillColor(earInnerColor.cgColor)
-        ctx.fill(px(2, earBaseRow).insetBy(dx: -0.5, dy: -0.5))
-        ctx.fill(px(7, earBaseRow).insetBy(dx: -0.5, dy: -0.5))
-
-        // ── Star eyes ────────────────────────────────────────────
-        // Row 3 is the widest head row — eyes at cols 3 and 6
+        // ── Animated eye (at grid value-3 position: row 2, col 2) ─
         let flip: CGFloat = facingRight ? 1 : -1
         let minimumEyeInset: CGFloat = 2
         let maxEyeShift = max(0, s - minimumEyeInset)
         let eyeShift = round(max(-1, min(1, lookDir)) * maxEyeShift) * flip
-        let eyeRowY = oy + CGFloat(bodyGrid.count - 1 - 3) * s + bb + legYBob
+        let eyeRowY = oy + CGFloat(bodyGrid.count - 1 - 2) * s + bb + legYBob
 
         if eyeClose < 0.9 {
             let starScale = s * (1 - eyeClose * 0.5)
-            drawStarEye(ctx: ctx, centerX: px(3, 0).origin.x + eyeShift + s / 2, centerY: eyeRowY + s / 2, size: starScale)
-            drawStarEye(ctx: ctx, centerX: px(6, 0).origin.x + eyeShift + s / 2, centerY: eyeRowY + s / 2, size: starScale)
+            drawStarEye(ctx: ctx, centerX: px(2, 0).origin.x + eyeShift + s / 2, centerY: eyeRowY + s / 2, size: starScale)
         } else {
-            // Closed eyes: horizontal dash
             let dashHeight = max(1, s * 0.15)
             let dashY = eyeRowY + s / 2 - dashHeight / 2
             ctx.setFillColor(eyeColor.cgColor)
-            ctx.fill(CGRect(x: px(3, 0).origin.x + eyeShift, y: dashY, width: s, height: dashHeight))
-            ctx.fill(CGRect(x: px(6, 0).origin.x + eyeShift, y: dashY, width: s, height: dashHeight))
+            ctx.fill(CGRect(x: px(2, 0).origin.x + eyeShift, y: dashY, width: s, height: dashHeight))
         }
-
-        // ── Nose ─────────────────────────────────────────────────
-        // Small dot centered on row 4 (lower head)
-        let noseRowY = oy + CGFloat(bodyGrid.count - 1 - 4) * s + bb + legYBob
-        ctx.setFillColor(noseColor.cgColor)
-        let noseSize = s * 0.4
-        let noseCX = px(4.5, 0).origin.x + s / 2 - noseSize / 2
-        ctx.fill(CGRect(x: noseCX, y: noseRowY + s * 0.3, width: noseSize, height: noseSize))
-
-        // ── Tail ─────────────────────────────────────────────────
-        // Curls up from one side of the body (back side)
-        ctx.setFillColor(bodyColor.cgColor)
-        let tailSide: CGFloat = facingRight ? -1 : CGFloat(bodyGrid[0].count)
-        let tailDir: CGFloat = facingRight ? -1 : 1
-        let tailBaseY = oy + bb + legYBob
-        let wagOffset = round(tailWag * s * 0.5)
-        // Tail starts at body level, curls upward
-        ctx.fill(px(tailSide, tailBaseY + s * 0.3).insetBy(dx: -0.5, dy: -0.5))
-        ctx.fill(px(tailSide + tailDir, tailBaseY + s * 1.0 + wagOffset).insetBy(dx: -0.5, dy: -0.5))
-        ctx.fill(px(tailSide + tailDir, tailBaseY + s * 2.0 + wagOffset * 0.5).insetBy(dx: -0.5, dy: -0.5))
 
         // ── Halo ─────────────────────────────────────────────────
         let haloBaseY = oy + CGFloat(bodyGrid.count) * s + 1 * s + haloBob + legYBob
@@ -182,9 +156,7 @@ final class CatView: NSView {
         ctx.setFillColor(eyeColor.cgColor)
         let half = size / 2
         let quarter = size / 4
-        // Vertical arm of 4-pointed star
         ctx.fill(CGRect(x: centerX - quarter, y: centerY - half, width: half, height: size))
-        // Horizontal arm of 4-pointed star
         ctx.fill(CGRect(x: centerX - half, y: centerY - quarter, width: size, height: half))
     }
 }
