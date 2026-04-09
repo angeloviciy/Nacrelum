@@ -464,12 +464,14 @@ extension AppController {
     }
 
     func positionSprite() {
-        catView.frame.origin.x = catX - spriteW / 2
-        catView.frame.origin.y = catY
+        let winOX = window?.frame.origin.x ?? 0
+        let winOY = window?.frame.origin.y ?? 0
+        catView.frame.origin.x = catX - spriteW / 2 - winOX
+        catView.frame.origin.y = catY - winOY
         catView.needsDisplay = true
 
-        shadowView.frame.origin.x = catX - spriteW / 2
-        shadowView.frame.origin.y = currentShadowFloorY() - SHADOW_FLOOR_MARGIN
+        shadowView.frame.origin.x = catX - spriteW / 2 - winOX
+        shadowView.frame.origin.y = currentShadowFloorY() - SHADOW_FLOOR_MARGIN - winOY
         shadowView.facingRight = catView.facingRight
         shadowView.legRows = catView.currentLegs.count
         shadowView.needsDisplay = true

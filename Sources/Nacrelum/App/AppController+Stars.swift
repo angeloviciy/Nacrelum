@@ -224,15 +224,17 @@ extension AppController {
         for i in 0..<stars.count {
             guard level == levelForStar(stars[i]) else {
                 stars[i].view.rotation = stars[i].rotation
-                stars[i].view.frame.origin.x = stars[i].x - starSize / 2
-                stars[i].view.frame.origin.y = stars[i].y
+                stars[i].view.frame.origin.x = stars[i].x - starSize / 2 - (window?.frame.origin.x ?? 0)
+                stars[i].view.frame.origin.y = stars[i].y - (window?.frame.origin.y ?? 0)
                 stars[i].view.needsDisplay = true
                 continue
             }
 
+            let winOX = window?.frame.origin.x ?? 0
+            let winOY = window?.frame.origin.y ?? 0
             let starRect = CGRect(
-                x: stars[i].x - starSize / 2,
-                y: stars[i].y,
+                x: stars[i].x - starSize / 2 - winOX,
+                y: stars[i].y - winOY,
                 width: starSize,
                 height: starSize
             )
@@ -247,8 +249,8 @@ extension AppController {
                 reactToTopStarHit(from: stars[i])
                 deflectStarAfterCatHit(at: i, catRect: catCollisionRect)
                 stars[i].view.rotation = stars[i].rotation
-                stars[i].view.frame.origin.x = stars[i].x - starSize / 2
-                stars[i].view.frame.origin.y = stars[i].y
+                stars[i].view.frame.origin.x = stars[i].x - starSize / 2 - (window?.frame.origin.x ?? 0)
+                stars[i].view.frame.origin.y = stars[i].y - (window?.frame.origin.y ?? 0)
                 stars[i].view.needsDisplay = true
                 continue
             }
