@@ -46,8 +46,8 @@ let bodyGrid: [[Int]] = [
     [0, 1, 0, 0, 0, 1, 1, 1, 1, 0],   // Row 1: tail base + head top (4px wide)
     [0, 1, 1, 1, 1, 1, 1, 3, 1, 0],   // Row 2: body + eye at col 7
     [0, 0, 1, 1, 1, 1, 1, 1, 1, 0],   // Row 3: body
-    [0, 0, 1, 1, 4, 4, 1, 1, 0, 0],   // Row 4: body + belly patch (cols 4-5, lower middle)
-    [0, 0, 0, 1, 1, 1, 1, 0, 0, 0],   // Row 5: lower body
+    [0, 0, 1, 1, 1, 1, 1, 1, 0, 0],   // Row 4: body
+    [0, 0, 0, 1, 4, 4, 1, 0, 0, 0],   // Row 5: lower body + belly patch (cols 4-5)
 ]
 
 // ── Halo Grid (10 wide x 3 tall, centered over head/right side) ─
