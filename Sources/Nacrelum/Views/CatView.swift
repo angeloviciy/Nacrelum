@@ -83,7 +83,8 @@ final class CatView: NSView {
         if armsRaised {
             ctx.setFillColor(bodyColor.cgColor)
             let armTopY = oy + CGFloat(bodyGrid.count) * s + bb + legYBob
-            ctx.fill(px(2, armTopY, w: s, h: 2 * s).insetBy(dx: -0.5, dy: -0.5))
+            ctx.fill(px(7, armTopY, w: s, h: 2 * s).insetBy(dx: -0.5, dy: -0.5))
+            ctx.fill(px(8, armTopY, w: s, h: 2 * s).insetBy(dx: -0.5, dy: -0.5))
         }
 
         // ── Legs ─────────────────────────────────────────────────
@@ -103,11 +104,11 @@ final class CatView: NSView {
 
                 switch val {
                 case 2:  ctx.setFillColor(chestColor.cgColor)
-                case 4:  ctx.setFillColor(noseColor.cgColor)
+                case 4:  ctx.setFillColor(bellyColor.cgColor)
                 default: ctx.setFillColor(bodyColor.cgColor)
                 }
 
-                if armsRaised && rowIndex == 0 && col == 2 {
+                if armsRaised && rowIndex == 0 && (col == 7 || col == 8) {
                     continue
                 }
 
@@ -123,7 +124,7 @@ final class CatView: NSView {
             }
         }
 
-        // ── Animated eye (at grid value-3 position: row 2, col 2) ─
+        // ── Animated eye (at grid value-3 position: row 2, col 7) ─
         let flip: CGFloat = facingRight ? 1 : -1
         let minimumEyeInset: CGFloat = 2
         let maxEyeShift = max(0, s - minimumEyeInset)
@@ -132,12 +133,12 @@ final class CatView: NSView {
 
         if eyeClose < 0.9 {
             let starScale = s * (1 - eyeClose * 0.5)
-            drawStarEye(ctx: ctx, centerX: px(2, 0).origin.x + eyeShift + s / 2, centerY: eyeRowY + s / 2, size: starScale)
+            drawStarEye(ctx: ctx, centerX: px(7, 0).origin.x + eyeShift + s / 2, centerY: eyeRowY + s / 2, size: starScale)
         } else {
             let dashHeight = max(1, s * 0.15)
             let dashY = eyeRowY + s / 2 - dashHeight / 2
             ctx.setFillColor(eyeColor.cgColor)
-            ctx.fill(CGRect(x: px(2, 0).origin.x + eyeShift, y: dashY, width: s, height: dashHeight))
+            ctx.fill(CGRect(x: px(7, 0).origin.x + eyeShift, y: dashY, width: s, height: dashHeight))
         }
 
         // ── Halo ─────────────────────────────────────────────────
