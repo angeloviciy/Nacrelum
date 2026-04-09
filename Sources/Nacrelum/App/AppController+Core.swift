@@ -71,51 +71,46 @@ extension AppController {
         return false
     }
 
-    func screenForMouse() -> NSScreen {
-        let mouseLocation = NSEvent.mouseLocation
-        for screen in NSScreen.screens {
-            if screen.frame.contains(mouseLocation) {
-                return screen
-            }
-        }
-        return NSScreen.main ?? NSScreen.screens[0]
-    }
-
     func refreshDockBounds() {
-        guard let mainScreen = NSScreen.main else { return }
-        let currentScreen = screenForMouse()
-        let screenFrame = currentScreen.frame
+        guard let screen = NSScreen.main else { return }
+        let screenFrame = screen.frame
 
         let wasVisible = dockVisible
-        dockVisible = !isDockObscured(screen: mainScreen)
+        dockVisible = !isDockObscured(screen: screen)
+        window?.alphaValue = dockVisible ? 1 : 0
 
-        // When dock becomes obscured, drop cat to ground instead of hiding
-        if !dockVisible && wasVisible && level == .dock {
-            level = .ground
-            catY = groundFloorY
+        if dockVisible && !wasVisible {
+            if level == .dock {
+                catY = dockFloorY
+            } else {
+                catY = groundFloorY
+            }
         }
 
-        // Dock bounds from main screen only (dock lives there)
-        let dock = DockInfo.get(screen: mainScreen)
+        let dock = DockInfo.get(screen: screen)
         let halfBody: CGFloat = 8 * SCALE
         let catFeetInSprite: CGFloat = 4 * SCALE
 
         dockLeft = dock.x + halfBody
         dockRight = dock.x + dock.width - halfBody
-        groundFloorY = screenFrame.origin.y - 5
-        dockFloorY = dock.height - catFeetInSprite + 21
-
-        // Screen bounds from the screen the mouse is on
         screenLeft = screenFrame.origin.x + halfBody + 10
         screenRight = screenFrame.origin.x + screenFrame.width - halfBody - 10
+        groundFloorY = -5
+        dockFloorY = dock.height - catFeetInSprite + 21
 
-        // Move window to match the current screen
-        let newFrame = screenFrame
-        if let w = window, w.frame != newFrame {
-            w.setFrame(newFrame, display: false)
-            if let contentView = w.contentView {
-                contentView.frame.size = newFrame.size
-            }
+        let windowHeight = screenFrame.height
+        window?.setFrame(
+            NSRect(
+                x: screenFrame.origin.x,
+                y: screenFrame.origin.y,
+                width: screenFrame.width,
+                height: windowHeight
+            ),
+            display: false
+        )
+
+        if let contentView = window?.contentView {
+            contentView.frame.size = NSSize(width: screenFrame.width, height: windowHeight)
         }
 
         if level == .dock {

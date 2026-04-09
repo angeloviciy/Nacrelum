@@ -4,7 +4,7 @@ import Carbon.HIToolbox
 extension AppController {
     @objc func feedStar() {
         guard window != nil else { return }
-        guard let screen = screenForMouse() as NSScreen? else { return }
+        guard let screen = NSScreen.main else { return }
         let screenFrame = screen.frame
 
         let starView = StarView(frame: NSRect(x: 0, y: 0, width: starSize, height: starSize))
@@ -225,16 +225,15 @@ extension AppController {
         for i in 0..<stars.count {
             guard level == levelForStar(stars[i]) else {
                 stars[i].view.rotation = stars[i].rotation
-                stars[i].view.frame.origin.x = stars[i].x - starSize / 2 - (window?.frame.origin.x ?? 0)
-                stars[i].view.frame.origin.y = stars[i].y - (window?.frame.origin.y ?? 0)
-                stars[i].view.needsDisplay = true
+                stars[i].view.frame.origin.x = stars[i].x - starSize / 2
+                stars[i].view.frame.origin.y = stars[i].y
                 stars[i].view.needsDisplay = true
                 continue
             }
 
             let starRect = CGRect(
-                x: stars[i].x - starSize / 2 - (window?.frame.origin.x ?? 0),
-                y: stars[i].y - (window?.frame.origin.y ?? 0),
+                x: stars[i].x - starSize / 2,
+                y: stars[i].y,
                 width: starSize,
                 height: starSize
             )
@@ -249,9 +248,8 @@ extension AppController {
                 reactToTopStarHit(from: stars[i])
                 deflectStarAfterCatHit(at: i, catRect: catCollisionRect)
                 stars[i].view.rotation = stars[i].rotation
-                stars[i].view.frame.origin.x = stars[i].x - starSize / 2 - (window?.frame.origin.x ?? 0)
-                stars[i].view.frame.origin.y = stars[i].y - (window?.frame.origin.y ?? 0)
-                stars[i].view.needsDisplay = true
+                stars[i].view.frame.origin.x = stars[i].x - starSize / 2
+                stars[i].view.frame.origin.y = stars[i].y
                 stars[i].view.needsDisplay = true
                 continue
             }
