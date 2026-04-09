@@ -520,7 +520,7 @@ extension AppController {
 
     func catHitRect() -> CGRect {
         let s = SCALE
-        let ox: CGFloat = 10 * s
+        let ox: CGFloat = 10 * s  // body drawn at this offset within sprite
         let oy: CGFloat = 4 * s
         let legRows = CGFloat(catView.currentLegs.count)
         let bottom = oy - legRows * s
@@ -528,7 +528,7 @@ extension AppController {
         return CGRect(
             x: catView.frame.origin.x + ox,
             y: catView.frame.origin.y + bottom,
-            width: 10 * s,
+            width: 16 * s,
             height: max(s, top - bottom)
         )
     }

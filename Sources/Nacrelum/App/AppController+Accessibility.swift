@@ -223,7 +223,7 @@ extension AppController {
         let screenFrame = screen.frame
         let dock = DockInfo.get(screen: screen)
 
-        let halfBody: CGFloat = 5 * SCALE
+        let halfBody: CGFloat = 8 * SCALE
         dockLeft = dock.x + halfBody
         dockRight = dock.x + dock.width - halfBody
         screenLeft = screenFrame.origin.x + halfBody + 10
