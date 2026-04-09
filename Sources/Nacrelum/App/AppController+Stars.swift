@@ -16,12 +16,16 @@ extension AppController {
 
         var star = StarState(view: starView)
         star.x = x
-        star.y = allFrame.height
+        // Drop from top of whichever screen the star spawns on
+        let spawnScreenTop = NSScreen.screens.first { s in
+            x >= s.frame.origin.x && x <= s.frame.origin.x + s.frame.width
+        }?.frame.maxY ?? allFrame.maxY
+        star.y = spawnScreenTop
         let fallDirection: CGFloat = Bool.random() ? 1 : -1
         star.velocityX = fallDirection * CGFloat.random(in: 120...180)
         star.rotation = CGFloat.random(in: -0.12...0.12)
         star.rotationSpeed = CGFloat.random(in: 3...7) * (Bool.random() ? 1 : -1)
-        star.floorY = (onDock ? dockFloorY : groundFloorY) - STAR_PADDING
+        star.floorY = (onDock ? dockFloorY : groundFloorYForX(x)) - STAR_PADDING
         stars.append(star)
     }
 

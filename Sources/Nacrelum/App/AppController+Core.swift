@@ -80,7 +80,7 @@ extension AppController {
         // When dock becomes obscured, drop cat to ground instead of hiding
         if !dockVisible && wasVisible && level == .dock {
             level = .ground
-            catY = groundFloorY
+            catY = groundFloorYForX(catX)
         }
 
         // Dock bounds from main screen only (dock lives there)
@@ -115,8 +115,18 @@ extension AppController {
         if level == .dock {
             catY = dockFloorY
         } else {
-            catY = groundFloorY
+            catY = groundFloorYForX(catX)
         }
+    }
+
+    func groundFloorYForX(_ x: CGFloat) -> CGFloat {
+        for screen in NSScreen.screens {
+            let f = screen.frame
+            if x >= f.origin.x && x <= f.origin.x + f.width {
+                return f.origin.y - 5
+            }
+        }
+        return groundFloorY
     }
 
     func currentMinX() -> CGFloat {
@@ -356,8 +366,8 @@ extension AppController {
         dockFloorY - STAR_PADDING
     }
 
-    func groundStarFloorY() -> CGFloat {
-        groundFloorY - STAR_PADDING
+    func groundStarFloorY(forX x: CGFloat? = nil) -> CGFloat {
+        groundFloorYForX(x ?? catX) - STAR_PADDING
     }
 
     func levelForStar(_ star: StarState) -> CatLevel {
@@ -386,7 +396,7 @@ extension AppController {
 
     func starFloorY(forX x: CGFloat, currentY: CGFloat, previousX: CGFloat? = nil, previousY: CGFloat? = nil) -> CGFloat {
         let dockFloor = dockStarFloorY()
-        let groundFloor = groundStarFloorY()
+        let groundFloor = groundStarFloorY(forX: x)
 
         if let previousX, let previousY,
            starCrossedDockTop(fromX: previousX, y: previousY, toX: x, y: currentY) {

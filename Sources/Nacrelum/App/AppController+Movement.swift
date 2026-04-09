@@ -229,6 +229,11 @@ extension AppController {
 
         updateLookDirection(dt: dt, fallbackX: mouseX)
 
+        // Adjust ground Y as cat crosses between screens
+        if level == .ground {
+            catY = groundFloorYForX(catX)
+        }
+
         updateVisuals(dt, isWalking: isWalking)
         positionSprite()
     }
@@ -238,7 +243,7 @@ extension AppController {
         jumpPhase = .squish
         jumpTimer = 0
         jumpStartY = catY
-        jumpEndY = down ? groundFloorY : dockFloorY
+        jumpEndY = down ? groundFloorYForX(catX) : dockFloorY
         jumpDirection = direction
         currentJumpHorizontalDistance = jumpHorizontalDistance
         landingTravelDirection = direction
@@ -481,6 +486,6 @@ extension AppController {
         if jumpPhase != .none {
             return min(jumpStartY, jumpEndY)
         }
-        return level == .dock ? dockFloorY : groundFloorY
+        return level == .dock ? dockFloorY : groundFloorYForX(catX)
     }
 }

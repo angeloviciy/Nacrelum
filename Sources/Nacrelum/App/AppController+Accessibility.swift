@@ -278,7 +278,7 @@ extension AppController {
         let startFromLeft = Bool.random()
         let dockCoversScreen = dock.width >= screenFrame.width * 0.99
         catX = startFromLeft ? allFrame.origin.x - spriteW : allFrame.origin.x + allFrame.width + spriteW
-        catY = dockCoversScreen ? dockFloorY : groundFloorY
+        catY = dockCoversScreen ? dockFloorY : groundFloorYForX(catX)
         level = dockCoversScreen ? .dock : .ground
         catView.facingRight = startFromLeft
         positionSprite()
