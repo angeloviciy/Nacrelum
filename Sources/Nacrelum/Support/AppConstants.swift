@@ -9,7 +9,7 @@ let outlineColor = NSColor(red: 0.30, green: 0.22, blue: 0.05, alpha: 1)   // Da
 let earInnerColor = NSColor(red: 0.95, green: 0.50, blue: 0.50, alpha: 1)  // Pink inner ear
 let bodyColor = NSColor(red: 0.91, green: 0.71, blue: 0.21, alpha: 1)      // Gold body
 let shadowColor = NSColor(red: 0.77, green: 0.60, blue: 0.17, alpha: 1)    // Dark gold shadow
-let eyeColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1)          // White eyes
+let eyeColor = NSColor(red: 0.05, green: 0.05, blue: 0.05, alpha: 1)       // Black eyes
 let haloColor = NSColor(red: 1.0, green: 0.95, blue: 0.60, alpha: 0.85)    // Pale glowing gold
 let bellyColor = NSColor(red: 0.96, green: 0.82, blue: 0.47, alpha: 1)     // Light gold (unused)
 let chestColor = NSColor(red: 0.96, green: 0.82, blue: 0.47, alpha: 1)     // Light gold (unused)
@@ -59,11 +59,11 @@ let bodyGrid: [[Int]] = [
     [0, 0, 0, 0, 1, 3, 3, 3, 3, 3, 3, 3, 3, 1, 0, 0],
 ]
 
-// ── Halo Grid (16 wide x 3 tall, centered over head) ────────────
+// ── Halo Grid (16 wide x 3 tall, small + centered over head) ────
 let haloGrid: [[Int]] = [
-    [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0],
 ]
 
 // ── Leg Grids (16 wide x 2 tall) ────────────────────────────────

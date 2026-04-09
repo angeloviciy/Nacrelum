@@ -110,11 +110,18 @@ final class CatView: NSView {
         let eyeShift = round(max(-1, min(1, lookDir)) * maxEyeShift) * flip
         let eyeRowY = oy + CGFloat(bodyGrid.count - 1 - 5) * s + bb + legYBob
 
+        let eyeAccentColor = NSColor.white.cgColor
+
         if eyeClose < 0.9 {
-            // Open eyes: filled squares (matching the pixel art style)
+            // Open eyes: black with white accent (highlight in upper-right)
             ctx.setFillColor(eyeColor.cgColor)
             ctx.fill(CGRect(x: px(10, 0).origin.x + eyeShift, y: eyeRowY, width: s, height: s))
             ctx.fill(CGRect(x: px(13, 0).origin.x + eyeShift, y: eyeRowY, width: s, height: s))
+            // White accent dot
+            let accentSize = max(2, s * 0.35)
+            ctx.setFillColor(eyeAccentColor)
+            ctx.fill(CGRect(x: px(10, 0).origin.x + eyeShift + s * 0.55, y: eyeRowY + s * 0.5, width: accentSize, height: accentSize))
+            ctx.fill(CGRect(x: px(13, 0).origin.x + eyeShift + s * 0.55, y: eyeRowY + s * 0.5, width: accentSize, height: accentSize))
         } else {
             // Closed eyes: horizontal dash
             let dashHeight = max(1, s * 0.2)
