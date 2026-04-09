@@ -76,14 +76,11 @@ extension AppController {
 
         let wasVisible = dockVisible
         dockVisible = !isDockObscured(screen: screen)
-        window?.alphaValue = dockVisible ? 1 : 0
 
-        if dockVisible && !wasVisible {
-            if level == .dock {
-                catY = dockFloorY
-            } else {
-                catY = groundFloorY
-            }
+        // When dock becomes obscured, drop cat to ground instead of hiding
+        if !dockVisible && wasVisible && level == .dock {
+            level = .ground
+            catY = groundFloorY
         }
 
         // Dock bounds from main screen only (dock lives there)
