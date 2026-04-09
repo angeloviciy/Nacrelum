@@ -48,7 +48,7 @@ final class AboutWindowController: NSWindowController {
         versionLabel.textColor = .tertiaryLabelColor
         versionLabel.alignment = .center
 
-        let descriptionLabel = NSTextField(labelWithString: "A tiny animated pet that lives on your Dock.")
+        let descriptionLabel = NSTextField(labelWithString: "A golden cat desktop tamagotchi.")
         descriptionLabel.font = NSFont.systemFont(ofSize: 13)
         descriptionLabel.textColor = .secondaryLabelColor
         descriptionLabel.alignment = .center
@@ -110,7 +110,7 @@ final class AboutWindowController: NSWindowController {
             ]
         )
         text.append(NSAttributedString(
-            string: "Ron Masas",
+            string: "angeloviciy",
             attributes: [
                 .link: AppMetadata.creatorURL,
                 .font: NSFont.systemFont(ofSize: 12),

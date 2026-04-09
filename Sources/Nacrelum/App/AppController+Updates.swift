@@ -95,7 +95,7 @@ extension AppController {
                         if userInitiated {
                             self.presentInfoAlert(
                                 title: "You’re Up to Date",
-                                message: "You’re already running PixelClaw \(AppMetadata.displayVersion)."
+                                message: "You’re already running Nacrelum \(AppMetadata.displayVersion)."
                             )
                         }
                     }
@@ -150,7 +150,7 @@ extension AppController {
         let alert = NSAlert()
         alert.alertStyle = .informational
         alert.messageText = "Update Available"
-        alert.informativeText = "PixelClaw \(release.versionString) is available."
+        alert.informativeText = "Nacrelum \(release.versionString) is available."
         alert.addButton(withTitle: "View Release")
         alert.addButton(withTitle: "Later")
         NSApp.activate(ignoringOtherApps: true)

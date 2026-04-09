@@ -1,7 +1,7 @@
 SWIFT ?= swift
 CONFIG ?= debug
-APP_NAME ?= PixelClaw
-BUNDLE_ID ?= com.ronmasas.$(APP_NAME)
+APP_NAME ?= Nacrelum
+BUNDLE_ID ?= com.angeloviciy.$(APP_NAME)
 APP_VERSION ?= 1.0.0
 APP_BUILD ?= 1
 DIST_DIR ?= Dist
@@ -25,12 +25,12 @@ all:
 	$(SWIFT) build -c $(CONFIG)
 
 run: all
-	@pkill -x PixelClaw 2>/dev/null || true
+	@pkill -x Nacrelum 2>/dev/null || true
 	@sleep 0.3
 	$(BINARY) &
 
 debug: all
-	@pkill -x PixelClaw 2>/dev/null || true
+	@pkill -x Nacrelum 2>/dev/null || true
 	@sleep 0.3
 	$(BINARY) --debug
 

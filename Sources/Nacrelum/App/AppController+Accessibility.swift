@@ -48,7 +48,7 @@ extension AppController {
         accessibilityItem.image = makeAccessibilityWarningIcon()
         menu.addItem(accessibilityItem)
 
-        let feedItem = NSMenuItem(title: "Drop Apple", action: #selector(feedApple), keyEquivalent: "f")
+        let feedItem = NSMenuItem(title: "Drop Star", action: #selector(feedStar), keyEquivalent: "f")
         feedItem.keyEquivalentModifierMask = [.option]
         feedItem.isEnabled = false
         let checkForUpdatesItem = NSMenuItem(
@@ -80,7 +80,7 @@ extension AppController {
     func updateStatusBarIcon() {
         guard let button = statusItem?.button else { return }
 
-        if let image = makeStatusBarIcon(named: isAccessibilityGranted ? "crabicon" : "crabicon_warn") {
+        if let image = makeStatusBarIcon(named: isAccessibilityGranted ? "caticon" : "caticon_warn") {
             image.size = NSSize(width: 18, height: 18)
             button.image = image
             button.imagePosition = .imageOnly
@@ -89,7 +89,7 @@ extension AppController {
         }
 
         button.image = nil
-        button.title = "🦀"
+        button.title = "🐱"
         button.imagePosition = .noImage
     }
 
@@ -145,8 +145,8 @@ extension AppController {
 
         let alert = NSAlert()
         alert.alertStyle = .informational
-        alert.messageText = "PixelClaw needs Accessibility access"
-        alert.informativeText = "PixelClaw uses Accessibility access to read your Dock position and respond to clicks. Without it, your pet cannot line up with the Dock or react when you interact with it.\n\nClick Continue to let macOS show the permission prompt."
+        alert.messageText = "Nacrelum needs Accessibility access"
+        alert.informativeText = "Nacrelum uses Accessibility access to read your Dock position and respond to clicks. Without it, your pet cannot line up with the Dock or react when you interact with it.\n\nClick Continue to let macOS show the permission prompt."
         alert.addButton(withTitle: "Continue")
 
         if alert.runModal() == .alertFirstButtonReturn {
@@ -165,7 +165,7 @@ extension AppController {
 
     @objc func openAccessibilitySettings() {
         startAccessibilityPolling()
-        if let url = URL(string: "x-apple.systempreferences:com.apple.preference.security?Privacy_Accessibility") {
+        if let url = URL(string: "x-star.systempreferences:com.star.preference.security?Privacy_Accessibility") {
             NSWorkspace.shared.open(url)
         }
     }
@@ -223,7 +223,7 @@ extension AppController {
         let screenFrame = screen.frame
         let dock = DockInfo.get(screen: screen)
 
-        let halfBody: CGFloat = 5 * SCALE
+        let halfBody: CGFloat = 6 * SCALE
         dockLeft = dock.x + halfBody
         dockRight = dock.x + dock.width - halfBody
         screenLeft = screenFrame.origin.x + halfBody + 10
@@ -232,9 +232,9 @@ extension AppController {
         let windowHeight = screenFrame.height
         let windowY = screenFrame.origin.y
 
-        let crabFeetInSprite: CGFloat = 4 * SCALE
+        let catFeetInSprite: CGFloat = 4 * SCALE
         groundFloorY = -5
-        dockFloorY = dock.height - crabFeetInSprite + 21
+        dockFloorY = dock.height - catFeetInSprite + 21
 
         let windowRect = NSRect(
             x: screenFrame.origin.x,
@@ -256,9 +256,9 @@ extension AppController {
         window.collectionBehavior = [.canJoinAllSpaces, .stationary, .ignoresCycle]
         window.hasShadow = false
 
-        crabView = CrabView(frame: NSRect(x: 0, y: 0, width: spriteW, height: spriteH))
-        crabView.wantsLayer = true
-        crabView.layer?.backgroundColor = NSColor.clear.cgColor
+        catView = CatView(frame: NSRect(x: 0, y: 0, width: spriteW, height: spriteH))
+        catView.wantsLayer = true
+        catView.layer?.backgroundColor = NSColor.clear.cgColor
 
         shadowView = ShadowView(frame: NSRect(x: 0, y: 0, width: spriteW, height: SHADOW_VIEW_HEIGHT))
         shadowView.wantsLayer = true
@@ -268,16 +268,16 @@ extension AppController {
         contentView.wantsLayer = true
         contentView.layer?.backgroundColor = NSColor.clear.cgColor
         contentView.addSubview(shadowView)
-        contentView.addSubview(crabView)
+        contentView.addSubview(catView)
 
         window.contentView = contentView
 
         let startFromLeft = Bool.random()
         let dockCoversScreen = dock.width >= screenFrame.width * 0.99
-        crabX = startFromLeft ? -spriteW : screenFrame.width + spriteW
-        crabY = dockCoversScreen ? dockFloorY : groundFloorY
+        catX = startFromLeft ? -spriteW : screenFrame.width + spriteW
+        catY = dockCoversScreen ? dockFloorY : groundFloorY
         level = dockCoversScreen ? .dock : .ground
-        crabView.facingRight = startFromLeft
+        catView.facingRight = startFromLeft
         positionSprite()
 
         lastTime = CACurrentMediaTime()

@@ -3,20 +3,20 @@
 import PackageDescription
 
 let package = Package(
-    name: "PixelClaw",
+    name: "Nacrelum",
     platforms: [
         .macOS(.v12)
     ],
     products: [
         .executable(
-            name: "PixelClaw",
-            targets: ["PixelClaw"]
+            name: "Nacrelum",
+            targets: ["Nacrelum"]
         )
     ],
     targets: [
         .executableTarget(
-            name: "PixelClaw",
-            path: "Sources/PixelClaw",
+            name: "Nacrelum",
+            path: "Sources/Nacrelum",
             resources: [
                 .process("Resources")
             ]

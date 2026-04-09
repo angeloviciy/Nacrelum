@@ -2,7 +2,7 @@ import Cocoa
 
 final class ShadowView: NSView {
     var facingRight = true
-    var legRows = 3
+    var legRows = 2
 
     override func draw(_ dirtyRect: NSRect) {
         guard let ctx = NSGraphicsContext.current?.cgContext else { return }
@@ -10,17 +10,17 @@ final class ShadowView: NSView {
         ctx.setShouldAntialias(false)
 
         let s = SCALE
-        let ox: CGFloat = 10 * s
+        let ox: CGFloat = 12 * s
         let oy: CGFloat = 4 * s + SHADOW_FLOOR_MARGIN
-        let bodyWidth = 10 * s
+        let bodyWidth: CGFloat = 12 * s
         let centerX = ox + bodyWidth / 2
         let rows = max(1, legRows)
 
-        let shadowWidth = 8 * s
+        let shadowWidth = 10 * s
         let shadowX = facingRight ? (ox + s) : (2 * centerX - ox - s - shadowWidth)
-        ctx.setFillColor(NSColor(red: 0.1, green: 0.04, blue: 0.0, alpha: 0.10).cgColor)
+        ctx.setFillColor(NSColor(red: 0.15, green: 0.12, blue: 0.0, alpha: 0.10).cgColor)
         ctx.fill(CGRect(x: shadowX, y: oy - CGFloat(rows + 1) * s - 2, width: shadowWidth, height: s))
-        ctx.setFillColor(NSColor(red: 0.48, green: 0.29, blue: 0.19, alpha: 0.10).cgColor)
+        ctx.setFillColor(NSColor(red: 0.50, green: 0.40, blue: 0.10, alpha: 0.10).cgColor)
         ctx.fill(CGRect(x: shadowX, y: oy - CGFloat(rows) * s - 2, width: shadowWidth, height: s))
     }
 }

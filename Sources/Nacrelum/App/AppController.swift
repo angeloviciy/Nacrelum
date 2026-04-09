@@ -9,10 +9,10 @@ final class AppController: NSObject, NSApplicationDelegate {
     var accessibilityPromptRequestedThisLaunch = false
     var accessibilityPollTimer: Timer?
     var releaseCheckTimer: Timer?
-    var crabView: CrabView!
+    var catView: CatView!
     var shadowView: ShadowView!
-    var crabX: CGFloat = 0
-    var crabY: CGFloat = 0
+    var catX: CGFloat = 0
+    var catY: CGFloat = 0
     var walkSpeed: CGFloat = 120
     var lastTime: TimeInterval = 0
     var walkTimer: CGFloat = 0
@@ -36,7 +36,7 @@ final class AppController: NSObject, NSApplicationDelegate {
     var screenLeft: CGFloat = 0
     var screenRight: CGFloat = 0
 
-    var level: CrabLevel = .dock
+    var level: CatLevel = .dock
     var jumpPhase: JumpPhase = .none
     var jumpTimer: CGFloat = 0
     var jumpStartY: CGFloat = 0
@@ -57,14 +57,14 @@ final class AppController: NSObject, NSApplicationDelegate {
     var lastMouseMoveTime: TimeInterval = 0
     var mouseSettled = false
     var pendingTargetX: CGFloat? = nil
-    var isSeekingApples = false
-    var appleSeekStartTime: TimeInterval = 0
-    var appleSeekDelay: TimeInterval = 0
-    var appleSeekTargetID: ObjectIdentifier? = nil
-    var appleSeekHopTriggers: [CGFloat] = []
+    var isSeekingStars = false
+    var starSeekStartTime: TimeInterval = 0
+    var starSeekDelay: TimeInterval = 0
+    var starSeekTargetID: ObjectIdentifier? = nil
+    var starSeekHopTriggers: [CGFloat] = []
 
-    var spriteW: CGFloat = 30 * SCALE
-    var spriteH: CGFloat = 16 * SCALE
+    var spriteW: CGFloat = 36 * SCALE
+    var spriteH: CGFloat = 22 * SCALE
     var lastDockCheck: TimeInterval = 0
     let dockCheckInterval: TimeInterval = 2.0
     var dockVisible = true
@@ -87,11 +87,11 @@ final class AppController: NSObject, NSApplicationDelegate {
     var lastNotifiedReleaseTag: String?
     var isCheckingForUpdates = false
 
-    var apples: [AppleState] = []
-    let appleGravity: CGFloat = -600
-    let appleSize: CGFloat = CGFloat(appleGrid.count) * APPLE_SCALE + APPLE_PADDING * 2
-    let appleContactSeparation: CGFloat = 0.70
-    let appleContactRowTolerance: CGFloat = 0.5
+    var stars: [StarState] = []
+    let starGravity: CGFloat = -600
+    let starSize: CGFloat = CGFloat(starGrid.count) * STAR_SCALE + STAR_PADDING * 2
+    let starContactSeparation: CGFloat = 0.70
+    let starContactRowTolerance: CGFloat = 0.5
 
     init(debugEnabled: Bool = false) {
         self.debugEnabled = debugEnabled

@@ -1,11 +1,11 @@
 import Cocoa
 
-final class AppleView: NSView {
+final class StarView: NSView {
     static let cachedImage: CGImage? = {
-        let s = APPLE_SCALE
-        let cols = appleGrid[0].count
-        let rows = appleGrid.count
-        let imageSize = CGFloat(rows) * s + APPLE_PADDING * 2
+        let s = STAR_SCALE
+        let cols = starGrid[0].count
+        let rows = starGrid.count
+        let imageSize = CGFloat(rows) * s + STAR_PADDING * 2
         let width = Int(imageSize)
         let height = Int(imageSize)
 
@@ -25,11 +25,11 @@ final class AppleView: NSView {
 
         for rowIndex in 0..<rows {
             for col in 0..<cols {
-                let colorIdx = appleGrid[rowIndex][col]
-                guard colorIdx != 0, let color = appleColors[colorIdx] else { continue }
+                let colorIdx = starGrid[rowIndex][col]
+                guard colorIdx != 0, let color = starColors[colorIdx] else { continue }
                 ctx.setFillColor(color.cgColor)
-                let y = APPLE_PADDING + CGFloat(rows - 1 - rowIndex) * s
-                ctx.fill(CGRect(x: APPLE_PADDING + CGFloat(col) * s, y: y, width: s, height: s))
+                let y = STAR_PADDING + CGFloat(rows - 1 - rowIndex) * s
+                ctx.fill(CGRect(x: STAR_PADDING + CGFloat(col) * s, y: y, width: s, height: s))
             }
         }
 

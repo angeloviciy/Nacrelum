@@ -1,6 +1,6 @@
 import Cocoa
 
-enum CrabLevel {
+enum CatLevel {
     case dock
     case ground
 }
@@ -12,20 +12,20 @@ enum JumpPhase {
     case land
 }
 
-enum ApplePhase {
+enum StarPhase {
     case falling
     case bounce
     case resting
 }
 
-struct AppleState {
-    var view: AppleView
-    var phase: ApplePhase = .falling
+struct StarState {
+    var view: StarView
+    var phase: StarPhase = .falling
     var x: CGFloat = 0
     var y: CGFloat = 0
     var previousX: CGFloat = 0
     var previousY: CGFloat = 0
-    var crabHitCooldown: CGFloat = 0
+    var catHitCooldown: CGFloat = 0
     var velocityX: CGFloat = 0
     var velocityY: CGFloat = 0
     var rotation: CGFloat = 0
