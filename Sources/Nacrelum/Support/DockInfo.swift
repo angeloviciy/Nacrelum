@@ -10,7 +10,7 @@ struct DockInfo {
         let visibleFrame = screen.visibleFrame
         let dockHeight = visibleFrame.origin.y - screenFrame.origin.y
 
-        if let dockApp = NSWorkspace.shared.runningApplications.first(where: { $0.bundleIdentifier == "com.star.dock" }) {
+        if let dockApp = NSWorkspace.shared.runningApplications.first(where: { $0.bundleIdentifier == "com.apple.dock" }) {
             let appEl = AXUIElementCreateApplication(dockApp.processIdentifier)
             var children: CFTypeRef?
             AXUIElementCopyAttributeValue(appEl, "AXChildren" as CFString, &children)

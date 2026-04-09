@@ -165,7 +165,7 @@ extension AppController {
 
     @objc func openAccessibilitySettings() {
         startAccessibilityPolling()
-        if let url = URL(string: "x-star.systempreferences:com.star.preference.security?Privacy_Accessibility") {
+        if let url = URL(string: "x-apple.systempreferences:com.apple.preference.security?Privacy_Accessibility") {
             NSWorkspace.shared.open(url)
         }
     }

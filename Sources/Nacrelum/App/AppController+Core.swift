@@ -40,8 +40,8 @@ extension AppController {
         let screenFrame = screen.frame
 
         guard let frontApp = NSWorkspace.shared.frontmostApplication else { return false }
-        if frontApp.bundleIdentifier == "com.star.dock" ||
-            frontApp.bundleIdentifier == "com.star.finder" {
+        if frontApp.bundleIdentifier == "com.apple.dock" ||
+            frontApp.bundleIdentifier == "com.apple.finder" {
             return false
         }
 
