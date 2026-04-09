@@ -223,26 +223,23 @@ extension AppController {
         let screenFrame = screen.frame
         let dock = DockInfo.get(screen: screen)
 
-        // Union of all screens for multi-monitor support
-        let allFrame = NSScreen.screens.reduce(CGRect.null) { $0.union($1.frame) }
-
         let halfBody: CGFloat = 8 * SCALE
         dockLeft = dock.x + halfBody
         dockRight = dock.x + dock.width - halfBody
-        screenLeft = allFrame.origin.x + halfBody + 10
-        screenRight = allFrame.origin.x + allFrame.width - halfBody - 10
+        screenLeft = screenFrame.origin.x + halfBody + 10
+        screenRight = screenFrame.origin.x + screenFrame.width - halfBody - 10
 
-        let windowHeight = allFrame.height
-        let windowY = allFrame.origin.y
+        let windowHeight = screenFrame.height
+        let windowY = screenFrame.origin.y
 
         let catFeetInSprite: CGFloat = 4 * SCALE
         groundFloorY = -5
         dockFloorY = dock.height - catFeetInSprite + 21
 
         let windowRect = NSRect(
-            x: allFrame.origin.x,
+            x: screenFrame.origin.x,
             y: windowY,
-            width: allFrame.width,
+            width: screenFrame.width,
             height: windowHeight
         )
 
@@ -267,7 +264,7 @@ extension AppController {
         shadowView.wantsLayer = true
         shadowView.layer?.backgroundColor = NSColor.clear.cgColor
 
-        let contentView = NSView(frame: NSRect(x: 0, y: 0, width: Int(allFrame.width), height: Int(windowHeight)))
+        let contentView = NSView(frame: NSRect(x: 0, y: 0, width: Int(screenFrame.width), height: Int(windowHeight)))
         contentView.wantsLayer = true
         contentView.layer?.backgroundColor = NSColor.clear.cgColor
         contentView.addSubview(shadowView)
@@ -277,8 +274,8 @@ extension AppController {
 
         let startFromLeft = Bool.random()
         let dockCoversScreen = dock.width >= screenFrame.width * 0.99
-        catX = startFromLeft ? allFrame.origin.x - spriteW : allFrame.origin.x + allFrame.width + spriteW
-        catY = dockCoversScreen ? dockFloorY : groundFloorYForX(catX)
+        catX = startFromLeft ? -spriteW : screenFrame.width + spriteW
+        catY = dockCoversScreen ? dockFloorY : groundFloorY
         level = dockCoversScreen ? .dock : .ground
         catView.facingRight = startFromLeft
         positionSprite()

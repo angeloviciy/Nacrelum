@@ -4,28 +4,25 @@ import Carbon.HIToolbox
 extension AppController {
     @objc func feedStar() {
         guard window != nil else { return }
-        let allFrame = NSScreen.screens.reduce(CGRect.null) { $0.union($1.frame) }
+        guard let screen = screenForMouse() as NSScreen? else { return }
+        let screenFrame = screen.frame
 
         let starView = StarView(frame: NSRect(x: 0, y: 0, width: starSize, height: starSize))
         starView.wantsLayer = true
         starView.layer?.backgroundColor = NSColor.clear.cgColor
         window.contentView?.addSubview(starView)
 
-        let x = starSpawnX(in: allFrame)
+        let x = starSpawnX(in: screenFrame)
         let onDock = x >= dockLeft && x <= dockRight
 
         var star = StarState(view: starView)
         star.x = x
-        // Drop from top of whichever screen the star spawns on
-        let spawnScreenTop = NSScreen.screens.first { s in
-            x >= s.frame.origin.x && x <= s.frame.origin.x + s.frame.width
-        }?.frame.maxY ?? allFrame.maxY
-        star.y = spawnScreenTop
+        star.y = screenFrame.height
         let fallDirection: CGFloat = Bool.random() ? 1 : -1
         star.velocityX = fallDirection * CGFloat.random(in: 120...180)
         star.rotation = CGFloat.random(in: -0.12...0.12)
         star.rotationSpeed = CGFloat.random(in: 3...7) * (Bool.random() ? 1 : -1)
-        star.floorY = (onDock ? dockFloorY : groundFloorYForX(x)) - STAR_PADDING
+        star.floorY = (onDock ? dockFloorY : groundFloorY) - STAR_PADDING
         stars.append(star)
     }
 
@@ -231,14 +228,13 @@ extension AppController {
                 stars[i].view.frame.origin.x = stars[i].x - starSize / 2 - (window?.frame.origin.x ?? 0)
                 stars[i].view.frame.origin.y = stars[i].y - (window?.frame.origin.y ?? 0)
                 stars[i].view.needsDisplay = true
+                stars[i].view.needsDisplay = true
                 continue
             }
 
-            let winOX = window?.frame.origin.x ?? 0
-            let winOY = window?.frame.origin.y ?? 0
             let starRect = CGRect(
-                x: stars[i].x - starSize / 2 - winOX,
-                y: stars[i].y - winOY,
+                x: stars[i].x - starSize / 2 - (window?.frame.origin.x ?? 0),
+                y: stars[i].y - (window?.frame.origin.y ?? 0),
                 width: starSize,
                 height: starSize
             )
@@ -255,6 +251,7 @@ extension AppController {
                 stars[i].view.rotation = stars[i].rotation
                 stars[i].view.frame.origin.x = stars[i].x - starSize / 2 - (window?.frame.origin.x ?? 0)
                 stars[i].view.frame.origin.y = stars[i].y - (window?.frame.origin.y ?? 0)
+                stars[i].view.needsDisplay = true
                 stars[i].view.needsDisplay = true
                 continue
             }

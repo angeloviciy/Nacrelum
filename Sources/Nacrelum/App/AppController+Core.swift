@@ -71,40 +71,46 @@ extension AppController {
         return false
     }
 
+    func screenForMouse() -> NSScreen {
+        let mouseLocation = NSEvent.mouseLocation
+        for screen in NSScreen.screens {
+            if screen.frame.contains(mouseLocation) {
+                return screen
+            }
+        }
+        return NSScreen.main ?? NSScreen.screens[0]
+    }
+
     func refreshDockBounds() {
-        guard let screen = NSScreen.main else { return }
+        guard let mainScreen = NSScreen.main else { return }
+        let currentScreen = screenForMouse()
+        let screenFrame = currentScreen.frame
 
         let wasVisible = dockVisible
-        dockVisible = !isDockObscured(screen: screen)
+        dockVisible = !isDockObscured(screen: mainScreen)
 
         // When dock becomes obscured, drop cat to ground instead of hiding
         if !dockVisible && wasVisible && level == .dock {
             level = .ground
-            catY = groundFloorYForX(catX)
+            catY = groundFloorY
         }
 
         // Dock bounds from main screen only (dock lives there)
-        let dock = DockInfo.get(screen: screen)
+        let dock = DockInfo.get(screen: mainScreen)
         let halfBody: CGFloat = 8 * SCALE
         let catFeetInSprite: CGFloat = 4 * SCALE
 
         dockLeft = dock.x + halfBody
         dockRight = dock.x + dock.width - halfBody
-        groundFloorY = -5
+        groundFloorY = screenFrame.origin.y - 5
         dockFloorY = dock.height - catFeetInSprite + 21
 
-        // Screen bounds from union of ALL screens (multi-monitor)
-        let allFrame = NSScreen.screens.reduce(CGRect.null) { $0.union($1.frame) }
-        screenLeft = allFrame.origin.x + halfBody + 10
-        screenRight = allFrame.origin.x + allFrame.width - halfBody - 10
+        // Screen bounds from the screen the mouse is on
+        screenLeft = screenFrame.origin.x + halfBody + 10
+        screenRight = screenFrame.origin.x + screenFrame.width - halfBody - 10
 
-        // Only resize window if screen layout actually changed
-        let newFrame = NSRect(
-            x: allFrame.origin.x,
-            y: allFrame.origin.y,
-            width: allFrame.width,
-            height: allFrame.height
-        )
+        // Move window to match the current screen
+        let newFrame = screenFrame
         if let w = window, w.frame != newFrame {
             w.setFrame(newFrame, display: false)
             if let contentView = w.contentView {
@@ -115,18 +121,8 @@ extension AppController {
         if level == .dock {
             catY = dockFloorY
         } else {
-            catY = groundFloorYForX(catX)
+            catY = groundFloorY
         }
-    }
-
-    func groundFloorYForX(_ x: CGFloat) -> CGFloat {
-        for screen in NSScreen.screens {
-            let f = screen.frame
-            if x >= f.origin.x && x <= f.origin.x + f.width {
-                return f.origin.y - 5
-            }
-        }
-        return groundFloorY
     }
 
     func currentMinX() -> CGFloat {
@@ -366,8 +362,8 @@ extension AppController {
         dockFloorY - STAR_PADDING
     }
 
-    func groundStarFloorY(forX x: CGFloat? = nil) -> CGFloat {
-        groundFloorYForX(x ?? catX) - STAR_PADDING
+    func groundStarFloorY() -> CGFloat {
+        groundFloorY - STAR_PADDING
     }
 
     func levelForStar(_ star: StarState) -> CatLevel {
@@ -396,7 +392,7 @@ extension AppController {
 
     func starFloorY(forX x: CGFloat, currentY: CGFloat, previousX: CGFloat? = nil, previousY: CGFloat? = nil) -> CGFloat {
         let dockFloor = dockStarFloorY()
-        let groundFloor = groundStarFloorY(forX: x)
+        let groundFloor = groundStarFloorY()
 
         if let previousX, let previousY,
            starCrossedDockTop(fromX: previousX, y: previousY, toX: x, y: currentY) {
