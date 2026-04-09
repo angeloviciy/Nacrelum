@@ -98,19 +98,18 @@ extension AppController {
         screenLeft = allFrame.origin.x + halfBody + 10
         screenRight = allFrame.origin.x + allFrame.width - halfBody - 10
 
-        let windowHeight = allFrame.height
-        window?.setFrame(
-            NSRect(
-                x: allFrame.origin.x,
-                y: allFrame.origin.y,
-                width: allFrame.width,
-                height: windowHeight
-            ),
-            display: false
+        // Only resize window if screen layout actually changed
+        let newFrame = NSRect(
+            x: allFrame.origin.x,
+            y: allFrame.origin.y,
+            width: allFrame.width,
+            height: allFrame.height
         )
-
-        if let contentView = window?.contentView {
-            contentView.frame.size = NSSize(width: allFrame.width, height: windowHeight)
+        if let w = window, w.frame != newFrame {
+            w.setFrame(newFrame, display: false)
+            if let contentView = w.contentView {
+                contentView.frame.size = newFrame.size
+            }
         }
 
         if level == .dock {
