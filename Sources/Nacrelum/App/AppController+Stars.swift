@@ -4,20 +4,19 @@ import Carbon.HIToolbox
 extension AppController {
     @objc func feedStar() {
         guard window != nil else { return }
-        guard let screen = NSScreen.main else { return }
-        let screenFrame = screen.frame
+        let allFrame = NSScreen.screens.reduce(CGRect.null) { $0.union($1.frame) }
 
         let starView = StarView(frame: NSRect(x: 0, y: 0, width: starSize, height: starSize))
         starView.wantsLayer = true
         starView.layer?.backgroundColor = NSColor.clear.cgColor
         window.contentView?.addSubview(starView)
 
-        let x = starSpawnX(in: screenFrame)
+        let x = starSpawnX(in: allFrame)
         let onDock = x >= dockLeft && x <= dockRight
 
         var star = StarState(view: starView)
         star.x = x
-        star.y = screenFrame.height
+        star.y = allFrame.height
         let fallDirection: CGFloat = Bool.random() ? 1 : -1
         star.velocityX = fallDirection * CGFloat.random(in: 120...180)
         star.rotation = CGFloat.random(in: -0.12...0.12)

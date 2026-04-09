@@ -73,7 +73,6 @@ extension AppController {
 
     func refreshDockBounds() {
         guard let screen = NSScreen.main else { return }
-        let screenFrame = screen.frame
 
         let wasVisible = dockVisible
         dockVisible = !isDockObscured(screen: screen)
@@ -87,30 +86,34 @@ extension AppController {
             }
         }
 
+        // Dock bounds from main screen only (dock lives there)
         let dock = DockInfo.get(screen: screen)
         let halfBody: CGFloat = 8 * SCALE
         let catFeetInSprite: CGFloat = 4 * SCALE
 
         dockLeft = dock.x + halfBody
         dockRight = dock.x + dock.width - halfBody
-        screenLeft = screenFrame.origin.x + halfBody + 10
-        screenRight = screenFrame.origin.x + screenFrame.width - halfBody - 10
         groundFloorY = -5
         dockFloorY = dock.height - catFeetInSprite + 21
 
-        let windowHeight = screenFrame.height
+        // Screen bounds from union of ALL screens (multi-monitor)
+        let allFrame = NSScreen.screens.reduce(CGRect.null) { $0.union($1.frame) }
+        screenLeft = allFrame.origin.x + halfBody + 10
+        screenRight = allFrame.origin.x + allFrame.width - halfBody - 10
+
+        let windowHeight = allFrame.height
         window?.setFrame(
             NSRect(
-                x: screenFrame.origin.x,
-                y: screenFrame.origin.y,
-                width: screenFrame.width,
+                x: allFrame.origin.x,
+                y: allFrame.origin.y,
+                width: allFrame.width,
                 height: windowHeight
             ),
             display: false
         )
 
         if let contentView = window?.contentView {
-            contentView.frame.size = NSSize(width: screenFrame.width, height: windowHeight)
+            contentView.frame.size = NSSize(width: allFrame.width, height: windowHeight)
         }
 
         if level == .dock {
