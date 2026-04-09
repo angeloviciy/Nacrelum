@@ -42,8 +42,9 @@ let SHADOW_VIEW_HEIGHT: CGFloat = 6 * SCALE + SHADOW_FLOOR_MARGIN
 //   px() mirrors everything when facingRight=false → head still leads.
 //   0=empty, 1=body(gold), 3=eye(animated), 4=belly(light pink)
 let bodyGrid: [[Int]] = [
-    [0, 1, 0, 0, 0, 0, 0, 1, 1, 0],   // Row 0: tail tip (curled up) + ear (2px)
-    [0, 1, 0, 0, 0, 1, 1, 1, 1, 0],   // Row 1: tail base + head top (4px wide)
+    [0, 0, 0, 0, 0, 0, 0, 0, 1, 0],   // Row 0: ear tip (pointy)
+    [0, 1, 0, 0, 0, 0, 0, 1, 1, 0],   // Row 1: tail tip + ear base (2px)
+    [0, 1, 0, 0, 0, 1, 1, 1, 1, 0],   // Row 2: tail base + head top (4px wide)
     [0, 1, 1, 1, 1, 1, 1, 1, 3, 0],   // Row 2: body + eye at col 8
     [0, 0, 1, 1, 1, 1, 1, 1, 1, 0],   // Row 3: body
     [0, 0, 1, 1, 1, 1, 1, 1, 0, 0],   // Row 4: body

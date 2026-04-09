@@ -129,7 +129,7 @@ final class CatView: NSView {
         let minimumEyeInset: CGFloat = 2
         let maxEyeShift = max(0, s - minimumEyeInset)
         let eyeShift = round(max(-1, min(1, lookDir)) * maxEyeShift) * flip
-        let eyeRowY = oy + CGFloat(bodyGrid.count - 1 - 2) * s + bb + legYBob
+        let eyeRowY = oy + CGFloat(bodyGrid.count - 1 - 3) * s + bb + legYBob
 
         if eyeClose < 0.9 {
             let starScale = s * (1 - eyeClose * 0.5)
